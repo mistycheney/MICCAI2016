@@ -1,0 +1,62 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+
+\bibitem{ccf2015}
+Technical white paper: Allen mouse common coordinate framework. Tech. rep.
+  (2015)
+
+\bibitem{chiang2011three}
+Chiang, A.S., Lin, C.Y., Chuang, C.C., Chang, H.M., Hsieh, C.H., Yeh, C.W.,
+  Shih, C.T., Wu, J.J., Wang, G.T., Chen, Y.C., et~al.: Three-dimensional
+  reconstruction of brain-wide wiring networks in drosophila at single-cell
+  resolution. Current Biology  21(1),  1--11 (2011)
+
+\bibitem{dong2008allen}
+Dong, H.: Allen Reference Atlas: a digital color brain atlas of the C57BL/6J
+  male mouse. John Wiley \& Sons (2008)
+
+\bibitem{johnson2010waxholm}
+Johnson, G.A., Badea, A., Brandenburg, J., Cofer, G., Fubara, B., Liu, S.,
+  Nissanov, J.: Waxholm space: an image-based reference for coordinating mouse
+  brain research. Neuroimage  53(2),  365--372 (2010)
+
+\bibitem{klein2010elastix}
+Klein, S., Staring, M., Murphy, K., Viergever, M.A., Pluim, J.P.: Elastix: a
+  toolbox for intensity-based medical image registration. Medical Imaging, IEEE
+  Transactions on  29(1),  196--205 (2010)
+
+\bibitem{lein2007genome}
+Lein, E.S., Hawrylycz, M.J., Ao, N., Ayres, M., Bensinger, A., Bernard, A.,
+  Boe, A.F., Boguski, M.S., Brockway, K.S., Byrnes, E.J., et~al.: Genome-wide
+  atlas of gene expression in the adult mouse brain. Nature  445(7124),
+  168--176 (2007)
+
+\bibitem{ng2009anatomic}
+Ng, L., Bernard, A., Lau, C., Overly, C.C., Dong, H.W., Kuan, C., Pathak, S.,
+  Sunkin, S.M., Dang, C., Bohland, J.W., et~al.: An anatomic gene expression
+  atlas of the adult mouse brain. Nature neuroscience  12(3),  356--362 (2009)
+
+\bibitem{oh2014mesoscale}
+Oh, S.W., Harris, J.A., Ng, L., Winslow, B., Cain, N., Mihalas, S., Wang, Q.,
+  Lau, C., Kuan, L., Henry, A.M., et~al.: A mesoscale connectome of the mouse
+  brain. Nature  508(7495),  207--214 (2014)
+
+\bibitem{peng2011brainaligner}
+Peng, H., Chung, P., Long, F., Qu, L., Jenett, A., Seeds, A.M., Myers, E.W.,
+  Simpson, J.H.: Brainaligner: 3d registration atlases of drosophila brains.
+  Nature methods  8(6),  493--498 (2011)
+
+\bibitem{randlett2015whole}
+Randlett, O., Wee, C.L., Naumann, E.A., Nnaemeka, O., Schoppik, D., Fitzgerald,
+  J.E., Portugues, R., Lacoste, A.M., Riegler, C., Engert, F., et~al.:
+  Whole-brain activity mapping onto a zebrafish brain atlas. Nature methods
+  12(11),  1039--1046 (2015)
+
+\bibitem{ronneberger2012vibe}
+Ronneberger, O., Liu, K., Rath, M., Rue$\beta$, D., Mueller, T., Skibbe, H.,
+  Drayer, B., Schmidt, T., Filippi, A., Nitschke, R., et~al.: Vibe-z: a
+  framework for 3d virtual colocalization analysis in zebrafish larval brains.
+  Nature Methods  9(7),  735--742 (2012)
+
+\end{thebibliography}

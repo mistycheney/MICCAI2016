@@ -1,0 +1,50 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: miccai.aux
+The style file: splncs03.bst
+Database file #1: bibfile.bib
+Warning--to sort, need author or key in ccf2015
+Warning--empty author in ccf2015
+Warning--missing institution in ccf2015
+You've used 11 entries,
+            2785 wiz_defined-function locations,
+            656 strings with 7157 characters,
+and the built_in function-call counts, 8683 in all, are:
+= -- 662
+> -- 456
+< -- 18
++ -- 187
+- -- 174
+* -- 639
+:= -- 1136
+add.period$ -- 11
+call.type$ -- 11
+change.case$ -- 114
+chr.to.int$ -- 0
+cite$ -- 14
+duplicate$ -- 684
+empty$ -- 605
+format.name$ -- 183
+if$ -- 1798
+int.to.chr$ -- 0
+int.to.str$ -- 11
+missing$ -- 172
+newline$ -- 38
+num.names$ -- 20
+pop$ -- 281
+preamble$ -- 1
+purify$ -- 103
+quote$ -- 0
+skip$ -- 208
+stack$ -- 0
+substring$ -- 428
+swap$ -- 484
+text.length$ -- 18
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 42
+warning$ -- 3
+while$ -- 58
+width$ -- 13
+write$ -- 111
+(There were 3 warnings)
