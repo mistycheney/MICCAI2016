@@ -12,9 +12,9 @@
 \usepackage{mathptmx}
 %\usepackage{newtxtext,newtxmath}
 
-%\newcommand{\authcmt}[2]{\textcolor{#1}{#2}}
-%\newcommand{\yuncong}[1]{\authcmt{red}{[YC: #1]}}
-%\newcommand{\yoav}[1]{\authcmt{blue}{[YF: #1]}}
+\newcommand{\authcmt}[2]{\textcolor{#1}{#2}}
+\newcommand{\yuncong}[1]{\authcmt{red}{[YC: #1]}}
+\newcommand{\yoav}[1]{\authcmt{blue}{[YF: #1]}}
 
 \begin{document}
 
@@ -56,45 +56,70 @@ The atlas contains the mean and variance of the positions and shapes of nine ana
 
 \section{Overview}
 
-With the advance of genetic labeling and high-throughput imaging techniques, there is an increasing need for brain atlases that characterize gene expression by statistical summarization of information in a large number of subjects.
+MRI has gained great popularity in recent years, however, the
+limitations of MRI in terms of resolution and variety of markers
+(stains) means that light microscopy is still a method of great
+importance.  One of the most important tools when analyzing light
+microscopy brain section is the brain atlas. Over time Atlases have
+improved in accuracy and coverage: Starting with Paxinos, and the
+Waxholm Space \cite{johnson2010waxholm}, and continuing with the Allen
+Reference Atlas \cite{dong2008allen} and its successors.
 
-The common workflow for building an atlas is to first generate an anatomical reference model by ``averaging" many brains and then register the gene expression patterns to this model. 
+An atlas is a visual reference: the researcher compares the
+images in the atlas to new section images in order to orient herself
+and to find the loci of interest. This is a time consuming
+process. The fact that the researcher is interested only in a specific
+set of loci means that other parts of the brain will not be
+identified. 
 
-This allows one to computationally quantify the variance between individuals, and allows one to identify the anatomical identities of regions of certain gene expressions.
+We propose a new type of atlas which we call the ``active
+atlas''. Unlike ``static atlases'', which are used as
+visual reference, the active atlas is a computer program that takes a
+section stack as input and then overlays a standard brain coordinate
+system (the Waxholm space coordinates) on the sections.
 
+An active atlas represents both the nominal location of the brain loci
+and the variation in these locations.
 
-%The difference between brains comes from two sources. One is physical deformation resulted from processing and the other is inherent biological variation. We assume that physical deformations are characterized by rigid transforms with scaling. Registering test brains to the atlas eliminates these deformtions. Any residual difference is then regarded as biological variations, which is of interest to neuroscientists.
-%
-%The atlas contains a set of landmark detectors. They detect regions and boundaries that are salient on the images.
-%
-%Each detector is based on 1) Texture
-%2) Geometry: volume in 3D common coordinate system. The volume is represented by a probabilistic model such as deformable template. This allows for registration based on shape at different levels of details, by considering different number of top principle components.
-%
-%
-%
-%The registration to atlas and landmark detection are performed iteratively, from coarse to fine resolution.
-%
-%
-%Human annotation is optional. 
-%
-%An anatomist can annotate any region that is of interest by drawing contours on an image.
-%
-%To take advantage of new images, it should be easy to train the classifiers in an incremental way.
-%Since new landmarks are expected be introduced, the classification framework should be flexible regarding adding new classes.
-%
-%
-%In addition to acting as a reference volume, the system 
-%
-%Based on the fact that the system does not top-down detection by classifying and the detectors evolve given more images,
-%
-%
-%
-%Our atlas is designed with the goal of facilitating the registration of data from different labs. Detectors are associated with each landmark, and can be updated based on new data.
-%
-%
-%we call our system an "active atlas".
-%in comparison to existing atlases
+An active atlas will enable automatic analysis of specific
+stains (dyes?). Dyes are available that can identfy highly
+specific characteristics in the brain. RNA binding markers can
+identify gene activity, forward projecting and backward projecting
+dyes mark the connectivity between brain regions and muscles and
+between brain regions and sensors. \yoav{David please help!}
 
+The active atlas is related to the common practice of
+section-to-section registration, but is fundamentally different.
+\begin{itemize}
+\item Registration aligns two neighboring sections of the same brain to each other,
+  while the active atlas aligns a section to a plane in the atlas.
+\item Registration is intended to produce a 3D image from a single
+  stack, the active atlas is intended to align multiple brains to each other.
+\end{itemize}
+
+\noindent Some challanges on the way to producing an atlas are:
+\begin{itemize}
+\item Grey level information can only identify some of the landmarks
+  in a typical section. Much of the area is of similar average grey
+  level. Important information lies in the shapes and organization of
+  the neurons.
+\item When comparing the same locus in different brains, there is no
+  one-to-one mapping between the neurons. The organization of the
+  neurons can only be characterized using statistical properties.
+\end{itemize}
+
+Our contribution is in developing a methodology for developing an
+atlas and an alignment algorithm for matching a new stack to this
+atlas. The rest of the paper is organized as follow. In Section~\ref{sec:related} we
+describe related work. In Section 3 we describe the semi-supervised
+method we used to create landmark detectors. In section 4 we describe
+the alignment algorithm and the way in which we quantify the variation
+in the location of the landmarks. In section 5 we describe out
+experimental result. We conclude in section 6 with lessons learned and
+future plans. 
+
+\section{Related work}
+\label{sec:related}
 
 Existing atlases of the mouse brain include Paxinos, Waxholm Space \cite{johnson2010waxholm}, and the more recent Allen Reference Atlas \cite{dong2008allen} and its successors, on top of which gene expression data \cite{lein2007genome, ng2009anatomic} as well as connectivity information \cite{oh2014mesoscale} are mapped. The latest version of their common coordinate framework \cite{ccf2015} is generated by deformably averaging two-photon microscopy images and manually demarcating structures with the help of immunohistochemistry data and genetic labeling data. Atlases for smaller organisms such as fruit flies \cite{peng2011brainaligner, chiang2011three} and zebrafish \cite{ronneberger2012vibe, randlett2015whole} are mostly based on volumetric images acquired by confocal microscopy. 
 For registration, the BrainAligner program \cite{peng2011brainaligner} relies on matching high-curvature points, and the ViBE-Z project \cite{ronneberger2012vibe} used trained classifiers to detect predefined 3D landmarks. 
