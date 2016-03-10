@@ -56,6 +56,8 @@ The atlas contains the mean and variance of the positions and shapes of nine ana
 
 \section{Overview}
 
+\yuncong{Putting MRI at the very first word of the paper makes me feel this paper is about MRI. Also we are not really comparing against MRI, the related work we compare to mostly use confocal or two-photon microscopy, which produce volumetric images. The advantage of MRI is the preservation of a realistic 3D volume, which can be obtained by confocal / two-photon microscopy as well and at a much higher resolution. So I think unless we compare with these techniques, we better not do it. What we can discuss as a motivation is why some neuroscientists prefer to actually cut and image the sections, instead of imaging the whole volume using optical sectioning. In fact, Allen did use serial two-photon microscopy stacks for their connectivity atlas work. So I guess tissue thickness is not the reason? Maybe David can answer this.. }
+
 MRI has gained great popularity in recent years, however, the
 limitations of MRI in terms of resolution and variety of markers
 (stains) means that light microscopy is still a method of great
@@ -78,6 +80,8 @@ visual reference, the active atlas is a computer program that takes a
 section stack as input and then overlays a standard brain coordinate
 system (the Waxholm space coordinates) on the sections.
 
+\yuncong{I do not have results for a standard coordinate system yet. Harvey was suggesting to use the stereotactic coordinate system in Paxinos. And in the future, align the stereotactic system to Walxhom space as well as Allen Reference Brain's coordinate system. I have not done these yet. Do you think I should at least specify a stereotactic coordinate system, so that we can show images with grid lines on top of them ? }
+
 An active atlas represents both the nominal location of the brain loci
 and the variation in these locations.
 
@@ -97,6 +101,8 @@ section-to-section registration, but is fundamentally different.
   stack, the active atlas is intended to align multiple brains to each other.
 \end{itemize}
 
+\yuncong{These two fundamental differences simply are the differences between 2D-2D registration and 3D-3D registration. They are not unique to the ``active atlas" concept. I don't think this part is necessary. Otherwise, we should emphasize how our approach for 3D-3D registration is different from other projects, most of whom rely on intensity correlation, contour consistency, or picking 3D point rather than region landmarks.}
+
 \noindent Some challanges on the way to producing an atlas are:
 \begin{itemize}
 \item Grey level information can only identify some of the landmarks
@@ -108,9 +114,17 @@ section-to-section registration, but is fundamentally different.
   neurons can only be characterized using statistical properties.
 \end{itemize}
 
-Our contribution is in developing a methodology for developing an
+\yuncong{I feel this part involves a mix of issues/claims, some of which apply to all registration method (e.g. grey-level is not enough, the need to describe texture), some of which apply to any atlas generation method (e.g. 3D-3D registration), and some of which apply only to ACTIVE atlas (still weak - what separates ``active atlas" from an ``static atlas" plus a 3D-3D registration algorithm).}
+
+
+
+Our contribution is in developing a methodology for developing an \yuncong{active}
 atlas and an alignment algorithm for matching a new stack to this
-atlas. The rest of the paper is organized as follow. In Section~\ref{sec:related} we
+atlas. 
+
+\yuncong{I think we should give a high-level description of our methodology here.}
+
+The rest of the paper is organized as follow. In Section~\ref{sec:related} we
 describe related work. In Section 3 we describe the semi-supervised
 method we used to create landmark detectors. In section 4 we describe
 the alignment algorithm and the way in which we quantify the variation
@@ -125,6 +139,8 @@ Existing atlases of the mouse brain include Paxinos, Waxholm Space \cite{johnson
 For registration, the BrainAligner program \cite{peng2011brainaligner} relies on matching high-curvature points, and the ViBE-Z project \cite{ronneberger2012vibe} used trained classifiers to detect predefined 3D landmarks. 
 
 These atlases are not updateable from new data, and do not provide means that facilitate the registration of new data.
+
+\yuncong{Do you think the two paragraphs below should be in the first section, since they highlight the largest feature of our system (i.e. use machine learning), and provides more reasons why it is ``active" }
 
 This paper proposes a machine-learning based method that generates an anatomical reference model from Nissl-stained cryo-section images. 
 

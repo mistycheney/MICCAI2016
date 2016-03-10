@@ -1,10 +1,12 @@
 \backcite {johnson2010waxholm}{{1}{1}{section.1.1}}
 \backcite {dong2008allen}{{1}{1}{section.1.1}}
-\backcite {lein2007genome, ng2009anatomic}{{1}{1}{section.1.1}}
-\backcite {oh2014mesoscale}{{1}{1}{section.1.1}}
-\backcite {ccf2015}{{1}{1}{section.1.1}}
-\backcite {peng2011brainaligner, chiang2011three}{{1}{1}{section.1.1}}
-\backcite {ronneberger2012vibe, randlett2015whole}{{1}{1}{section.1.1}}
-\backcite {peng2011brainaligner}{{1}{1}{section.1.1}}
-\backcite {ronneberger2012vibe}{{1}{1}{section.1.1}}
-\backcite {klein2010elastix}{{2}{2}{section.1.2}}
+\backcite {johnson2010waxholm}{{3}{2}{section.1.2}}
+\backcite {dong2008allen}{{3}{2}{section.1.2}}
+\backcite {lein2007genome, ng2009anatomic}{{3}{2}{section.1.2}}
+\backcite {oh2014mesoscale}{{3}{2}{section.1.2}}
+\backcite {ccf2015}{{3}{2}{section.1.2}}
+\backcite {peng2011brainaligner, chiang2011three}{{3}{2}{section.1.2}}
+\backcite {ronneberger2012vibe, randlett2015whole}{{3}{2}{section.1.2}}
+\backcite {peng2011brainaligner}{{3}{2}{section.1.2}}
+\backcite {ronneberger2012vibe}{{3}{2}{section.1.2}}
+\backcite {klein2010elastix}{{3}{3}{section.1.3}}

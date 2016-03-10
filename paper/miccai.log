@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.12.21)  8 MAR 2016 11:46
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.12.21)  10 MAR 2016 13:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -516,33 +516,33 @@ LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `OT1/ptm/b/n' tried instead on input line 57.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./miccai.bbl (./miccai.br
-f)
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] (./miccai.bbl (./m
+iccai.brf)
 \tf@brf=\write4
 \openout4 = `miccai.brf'.
 
- [2])
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 171.
- [3]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 171.
+)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 212.
 
-(./miccai.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 171.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 171.
+[4]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 212.
+ (./miccai.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 212.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 212.
 Package rerunfilecheck Info: File `miccai.out' has not changed.
 (rerunfilecheck)             Checksum: A6852347040538AB1D8A2AABF9BBF75E;76.
 Package rerunfilecheck Info: File `miccai.brf' has not changed.
-(rerunfilecheck)             Checksum: 83F4E57B635A6A374202232CF4BD5C4C;553.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 171.
+(rerunfilecheck)             Checksum: 3A75F47E224A9559323560E0F2121330;652.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 212.
  ) 
 Here is how much of TeX's memory you used:
- 6942 strings out of 494985
- 98770 string characters out of 6180355
- 196596 words of memory out of 5000000
- 10032 multiletter control sequences out of 15000+600000
- 40262 words of font info for 83 fonts, out of 8000000 for 9000
+ 6949 strings out of 494985
+ 98824 string characters out of 6180355
+ 196681 words of memory out of 5000000
+ 10036 multiletter control sequences out of 15000+600000
+ 41369 words of font info for 84 fonts, out of 8000000 for 9000
  36 hyphenation exceptions out of 8191
- 32i,5n,35p,1131b,464s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 32i,6n,35p,1131b,331s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/
@@ -551,10 +551,10 @@ type1/urw/symbol/usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/symbol
 /usyr.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr
 /share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on miccai.pdf (3 pages, 73682 bytes).
+Output written on miccai.pdf (4 pages, 79150 bytes).
 PDF statistics:
- 102 PDF objects out of 1000 (max. 8388607)
- 88 compressed objects within 1 object stream
- 20 named destinations out of 1000 (max. 500000)
+ 112 PDF objects out of 1000 (max. 8388607)
+ 97 compressed objects within 1 object stream
+ 22 named destinations out of 1000 (max. 500000)
  9 words of extra memory for PDF output out of 10000 (max. 10000000)
 
