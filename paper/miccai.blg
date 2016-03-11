@@ -6,45 +6,45 @@ Database file #1: bibfile.bib
 Warning--to sort, need author or key in ccf2015
 Warning--empty author in ccf2015
 Warning--missing institution in ccf2015
-You've used 11 entries,
+You've used 13 entries,
             2785 wiz_defined-function locations,
-            656 strings with 7157 characters,
-and the built_in function-call counts, 8683 in all, are:
-= -- 662
-> -- 456
-< -- 18
-+ -- 187
-- -- 174
-* -- 639
-:= -- 1136
-add.period$ -- 11
-call.type$ -- 11
-change.case$ -- 114
+            667 strings with 7511 characters,
+and the built_in function-call counts, 9631 in all, are:
+= -- 736
+> -- 485
+< -- 20
++ -- 201
+- -- 184
+* -- 697
+:= -- 1260
+add.period$ -- 13
+call.type$ -- 13
+change.case$ -- 124
 chr.to.int$ -- 0
-cite$ -- 14
-duplicate$ -- 684
-empty$ -- 605
-format.name$ -- 183
-if$ -- 1798
+cite$ -- 16
+duplicate$ -- 771
+empty$ -- 694
+format.name$ -- 195
+if$ -- 2002
 int.to.chr$ -- 0
-int.to.str$ -- 11
-missing$ -- 172
-newline$ -- 38
-num.names$ -- 20
-pop$ -- 281
+int.to.str$ -- 13
+missing$ -- 191
+newline$ -- 44
+num.names$ -- 24
+pop$ -- 314
 preamble$ -- 1
-purify$ -- 103
+purify$ -- 112
 quote$ -- 0
-skip$ -- 208
+skip$ -- 232
 stack$ -- 0
-substring$ -- 428
-swap$ -- 484
-text.length$ -- 18
+substring$ -- 475
+swap$ -- 531
+text.length$ -- 20
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 42
+type$ -- 48
 warning$ -- 3
-while$ -- 58
-width$ -- 13
-write$ -- 111
+while$ -- 67
+width$ -- 15
+write$ -- 130
 (There were 3 warnings)

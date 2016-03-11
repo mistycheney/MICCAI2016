@@ -56,81 +56,99 @@ The atlas contains the mean and variance of the positions and shapes of nine ana
 
 \section{Overview}
 
-\yuncong{Putting MRI at the very first word of the paper makes me feel this paper is about MRI. Also we are not really comparing against MRI, the related work we compare to mostly use confocal or two-photon microscopy, which produce volumetric images. The advantage of MRI is the preservation of a realistic 3D volume, which can be obtained by confocal / two-photon microscopy as well and at a much higher resolution. So I think unless we compare with these techniques, we better not do it. What we can discuss as a motivation is why some neuroscientists prefer to actually cut and image the sections, instead of imaging the whole volume using optical sectioning. In fact, Allen did use serial two-photon microscopy stacks for their connectivity atlas work. So I guess tissue thickness is not the reason? Maybe David can answer this.. }
+As one of the most important tools to neuroscientists, a brain atlas provides a standard model for the anatomy of a certain species' brain. It helps one establish the identity of a region of interest in a new sample. It also allows one to map different samples to a common coordinate system, so that one can quantify the spatial variance of a particular structure between individuals, or correlate gene expression patterns spatially to discover neural circuitry.
 
-MRI has gained great popularity in recent years, however, the
-limitations of MRI in terms of resolution and variety of markers
-(stains) means that light microscopy is still a method of great
-importance.  One of the most important tools when analyzing light
-microscopy brain section is the brain atlas. Over time Atlases have
-improved in accuracy and coverage: Starting with Paxinos, and the
-Waxholm Space \cite{johnson2010waxholm}, and continuing with the Allen
-Reference Atlas \cite{dong2008allen} and its successors.
+In this paper we focus on building an atlas for the mouse brainstem.
+Existing mouse brain atlases, such as the Paxinos' \cite{paxinos2004mouse}, Waxholm Space \cite{johnson2010waxholm} and the Allen Reference Atlas \cite{dong2008allen}, have some limitations. First, they do not have the desired level of details in the brainstem. Second, they are merely visual references. There are no tools for registering new data into the atlases. Third, they are not updateable. Fourth, they do not give the variance of structures. Lastly, a lot of manual work is involved in specifying registration landmarks and making annotations.
 
-An atlas is a visual reference: the researcher compares the
-images in the atlas to new section images in order to orient herself
-and to find the loci of interest. This is a time consuming
-process. The fact that the researcher is interested only in a specific
-set of loci means that other parts of the brain will not be
-identified. 
+We propose a new type of atlas which we call the ``active atlas". On the one hand, an active atlas is an anatomical reference model. It contains the mean and variance of position and shape of major anatomical structures. On the other hand, an active atlas includes landmark detectors. These detectors are texture classifiers trained in a semi-supervised fashion to detect regions with salient texture, such as nuclei and tracts, that can serve as registration landmarks. Such an atlas is ``active" because the detectors allows our system to actively detect landmarks on new data for registeration, instead of being a ``passive" registration template; and also because these detectors can update themselves from new data, thus not ``static".
 
-We propose a new type of atlas which we call the ``active
-atlas''. Unlike ``static atlases'', which are used as
-visual reference, the active atlas is a computer program that takes a
-section stack as input and then overlays a standard brain coordinate
-system (the Waxholm space coordinates) on the sections.
+This paper proposes a machine-learning based method for developing an active atlas, based on image series of Nissl-stained cryo-sectioned brains.
 
-\yuncong{I do not have results for a standard coordinate system yet. Harvey was suggesting to use the stereotactic coordinate system in Paxinos. And in the future, align the stereotactic system to Walxhom space as well as Allen Reference Brain's coordinate system. I have not done these yet. Do you think I should at least specify a stereotactic coordinate system, so that we can show images with grid lines on top of them ? }
-
-An active atlas represents both the nominal location of the brain loci
-and the variation in these locations.
-
-An active atlas will enable automatic analysis of specific
-stains (dyes?). Dyes are available that can identfy highly
-specific characteristics in the brain. RNA binding markers can
-identify gene activity, forward projecting and backward projecting
-dyes mark the connectivity between brain regions and muscles and
-between brain regions and sensors. \yoav{David please help!}
-
-The active atlas is related to the common practice of
-section-to-section registration, but is fundamentally different.
-\begin{itemize}
-\item Registration aligns two neighboring sections of the same brain to each other,
-  while the active atlas aligns a section to a plane in the atlas.
-\item Registration is intended to produce a 3D image from a single
-  stack, the active atlas is intended to align multiple brains to each other.
-\end{itemize}
-
-\yuncong{These two fundamental differences simply are the differences between 2D-2D registration and 3D-3D registration. They are not unique to the ``active atlas" concept. I don't think this part is necessary. Otherwise, we should emphasize how our approach for 3D-3D registration is different from other projects, most of whom rely on intensity correlation, contour consistency, or picking 3D point rather than region landmarks.}
-
-\noindent Some challanges on the way to producing an atlas are:
-\begin{itemize}
-\item Grey level information can only identify some of the landmarks
-  in a typical section. Much of the area is of similar average grey
-  level. Important information lies in the shapes and organization of
-  the neurons.
-\item When comparing the same locus in different brains, there is no
-  one-to-one mapping between the neurons. The organization of the
-  neurons can only be characterized using statistical properties.
-\end{itemize}
-
-\yuncong{I feel this part involves a mix of issues/claims, some of which apply to all registration method (e.g. grey-level is not enough, the need to describe texture), some of which apply to any atlas generation method (e.g. 3D-3D registration), and some of which apply only to ACTIVE atlas (still weak - what separates ``active atlas" from an ``static atlas" plus a 3D-3D registration algorithm).}
-
-
-
-Our contribution is in developing a methodology for developing an \yuncong{active}
-atlas and an alignment algorithm for matching a new stack to this
-atlas. 
-
-\yuncong{I think we should give a high-level description of our methodology here.}
-
-The rest of the paper is organized as follow. In Section~\ref{sec:related} we
+The rest of the paper is organized as follows. In Section~\ref{sec:related} we
 describe related work. In Section 3 we describe the semi-supervised
 method we used to create landmark detectors. In section 4 we describe
 the alignment algorithm and the way in which we quantify the variation
 in the location of the landmarks. In section 5 we describe out
 experimental result. We conclude in section 6 with lessons learned and
-future plans. 
+future plans.
+
+
+%\yuncong{Putting MRI at the very first word of the paper makes me feel this paper is about MRI. Also we are not really comparing against MRI, the related work we compare to mostly use confocal or two-photon microscopy, which produce volumetric images. The advantage of MRI is the preservation of a realistic 3D volume, which can be obtained by confocal / two-photon microscopy as well and at a much higher resolution. So I think unless we compare with these techniques, we better not do it. What we can discuss as a motivation is why some neuroscientists prefer to actually cut and image the sections, instead of imaging the whole volume using optical sectioning. In fact, Allen did use serial two-photon microscopy stacks for their connectivity atlas work. So I guess tissue thickness is not the reason? Maybe David can answer this.. }
+
+%MRI has gained great popularity in recent years, however, the
+%limitations of MRI in terms of resolution and variety of markers
+%(stains) means that light microscopy is still a method of great
+%importance.  One of the most important tools when analyzing light
+%microscopy brain section is the brain atlas. Over time Atlases have
+%improved in accuracy and coverage: Starting with Paxinos, and the
+%Waxholm Space \cite{johnson2010waxholm}, and continuing with the Allen
+%Reference Atlas \cite{dong2008allen} and its successors.
+%
+%An atlas is a visual reference: the researcher compares the
+%images in the atlas to new section images in order to orient herself
+%and to find the loci of interest. This is a time consuming
+%process. The fact that the researcher is interested only in a specific
+%set of loci means that other parts of the brain will not be
+%identified. 
+%
+%We propose a new type of atlas which we call the ``active
+%atlas''. Unlike ``static atlases'', which are used as
+%visual reference, the active atlas is a computer program that takes a
+%section stack as input and then overlays a standard brain coordinate
+%system (the Waxholm space coordinates) on the sections.
+%
+%%\yuncong{I do not have results for a standard coordinate system yet. Harvey was suggesting to use the stereotactic coordinate system in Paxinos. And in the future, align the stereotactic system to Walxhom space as well as Allen Reference Brain's coordinate system. I have not done these yet. Do you think I should at least specify a stereotactic coordinate system, so that we can show images with grid lines on top of them ? }
+%
+%An active atlas represents both the nominal location of the brain loci
+%and the variation in these locations.
+%
+%An active atlas will enable automatic analysis of specific
+%stains (dyes?). Dyes are available that can identfy highly
+%specific characteristics in the brain. RNA binding markers can
+%identify gene activity, forward projecting and backward projecting
+%dyes mark the connectivity between brain regions and muscles and
+%between brain regions and sensors. \yoav{David please help!}
+%
+%The active atlas is related to the common practice of
+%section-to-section registration, but is fundamentally different.
+%\begin{itemize}
+%\item Registration aligns two neighboring sections of the same brain to each other,
+%  while the active atlas aligns a section to a plane in the atlas.
+%\item Registration is intended to produce a 3D image from a single
+%  stack, the active atlas is intended to align multiple brains to each other.
+%\end{itemize}
+%
+%%\yuncong{These two fundamental differences simply are the differences between 2D-2D registration and 3D-3D registration. They are not unique to the ``active atlas" concept. I don't think this part is necessary. Otherwise, we should emphasize how our approach for 3D-3D registration is different from other projects, most of whom rely on intensity correlation, contour consistency, or picking 3D point rather than region landmarks.}
+%
+%\noindent Some challanges on the way to producing an atlas are:
+%\begin{itemize}
+%\item Grey level information can only identify some of the landmarks
+%  in a typical section. Much of the area is of similar average grey
+%  level. Important information lies in the shapes and organization of
+%  the neurons.
+%\item When comparing the same locus in different brains, there is no
+%  one-to-one mapping between the neurons. The organization of the
+%  neurons can only be characterized using statistical properties.
+%\end{itemize}
+%
+%%\yuncong{I feel this part involves a mix of issues/claims, some of which apply to all registration method (e.g. grey-level is not enough, the need to describe texture), some of which apply to any atlas generation method (e.g. 3D-3D registration), and some of which apply only to ACTIVE atlas (still weak - what separates ``active atlas" from an ``static atlas" plus a 3D-3D registration algorithm).}
+%
+%
+%
+%Our contribution is in developing a methodology for developing an \yuncong{active}
+%atlas and an alignment algorithm for matching a new stack to this
+%atlas. 
+%
+%\yuncong{I think we should give a high-level description of our methodology here.}
+%
+%The rest of the paper is organized as follow. In Section~\ref{sec:related} we
+%describe related work. In Section 3 we describe the semi-supervised
+%method we used to create landmark detectors. In section 4 we describe
+%the alignment algorithm and the way in which we quantify the variation
+%in the location of the landmarks. In section 5 we describe out
+%experimental result. We conclude in section 6 with lessons learned and
+%future plans. 
 
 \section{Related work}
 \label{sec:related}
@@ -138,32 +156,59 @@ future plans.
 Existing atlases of the mouse brain include Paxinos, Waxholm Space \cite{johnson2010waxholm}, and the more recent Allen Reference Atlas \cite{dong2008allen} and its successors, on top of which gene expression data \cite{lein2007genome, ng2009anatomic} as well as connectivity information \cite{oh2014mesoscale} are mapped. The latest version of their common coordinate framework \cite{ccf2015} is generated by deformably averaging two-photon microscopy images and manually demarcating structures with the help of immunohistochemistry data and genetic labeling data. Atlases for smaller organisms such as fruit flies \cite{peng2011brainaligner, chiang2011three} and zebrafish \cite{ronneberger2012vibe, randlett2015whole} are mostly based on volumetric images acquired by confocal microscopy. 
 For registration, the BrainAligner program \cite{peng2011brainaligner} relies on matching high-curvature points, and the ViBE-Z project \cite{ronneberger2012vibe} used trained classifiers to detect predefined 3D landmarks. 
 
-These atlases are not updateable from new data, and do not provide means that facilitate the registration of new data.
+%\yuncong{Do you think the two paragraphs below should be in the first section, since they highlight the largest feature of our system (i.e. use machine learning), and provides more reasons why it is ``active" }
 
-\yuncong{Do you think the two paragraphs below should be in the first section, since they highlight the largest feature of our system (i.e. use machine learning), and provides more reasons why it is ``active" }
-
-This paper proposes a machine-learning based method that generates an anatomical reference model from Nissl-stained cryo-section images. 
-
-In addition to describing the statistics of position and shape of anatomical structures, the model also include landmark detectors. These detectors are texture classifiers trained in a semi-supervised fashion to detect regions with salient texture that can serve as registration landmarks, such as nuclei and tracts. Because these detectors allows our system to actively detect landmarks on new data for registeration, instead of being a mere registration template; and also because these detectors can update themselves from new data, we refer to this system as an ``active atlas". 
 
 
 \section{Methodology}
 
+\subsection{Learning Texture Classifiers using Convolutional Neural Network}
 
-Registration to the atlas is based on landmark probability maps generated by the classifiers.
+%Unlike cerebrum and cerebellum, brainstem does not have striations. Grey-level information alone is not sufficient to discern most of the nuclei. Region textures are essential.
+
+To bootstrap the atlas generation process, we picked an arbitrary stack, and asked an expert anatomist to annotate every other image for major landmarks by drawing polygons on the images using a homemade program (Figure 1). The results are 100 polygons for 19 different landmarks that span the entire brainstem, including nuclei (e.g. facial motor nucleus, trigeminal nucleus) and fiber tracts (e.g. trigeminal spinal tract, superior cerebellar peduncle). Patches of size 224-by-224 that are completely inside of each annotation polygon are extracted. Random patches from outside of any polygon are also extracted as patches for ``background". These patches form the training set for the texture classifier. 
+A multiway classifier is obtained by fine-tuning the inception-BN network [1] using the training set. For an input patch, the classifier outputs a 20-dimensional probability vector, indicating the probability that the patch belongs to either the background or each of the 19 landmarks.
+
+The classifier is applied to images in all other stacks. To save computation, instead of predicting for patches centered at every pixel, the classifier predicts at grid points with a spacing of 56. The area between grid points is interpolated using bivariate spline. The result is a probability map for each image, where each pixel is assigned a probability vector.
+
+\subsection{Intra-stack Registration}
+
+As the brain sections are prepared using an advanced tape-transfer system, which almost perfectly preserves the shape of the sections, 3-parameter rigid transforms are sufficient to bring all sections into reasonable alignment. The transformations are found using the \textit{elastix} program \cite{klein2010elastix}, based on maximizing the normalized correlation of the intensity between the thumbnail versions of the sections. 
+
+Once the registration transformations are known, a probability volume is reconstructed for each stack from the probability maps of all its sections.  In a probability volume, each voxel has a probability vector. For the annotated stack, an annotation volume is reconstructed, in which each voxel has a scalar label. To facilitate registration at the next stage, the 3D contours of annotations are smoothed. We assume the sections all have constant thickness and are parallel to other sections in the same stack.
+
+\subsection{3D-3D Registration}
+
+To generate the atlas, we need to register the reconstructed volumes of all individuals in 3D and obtain an average. 
+This process is done iteratively. We begin by using the annotated volume as the template and register the other volumes to it. Because the sections may be cut at different angles for different stacks, in effect resulting in shears between the volumes, we find 12-parameter 3D affine transformations.
+
+Given the annotated volume $\Omega$ and a probability volume $S$, the best transformation is one that maximizes the ``same-class overlap" objective:
+
+\[ M(T) = \sum_k \sum_{p \in \Omega_k} S_k[Tp]\;,\]
+%\[ M(T) = \sum_{p \in \Omega} S_k(Tp) \cdot 1[\Omega(p) = k] \;,\]\\
+where $T$ is a 3-by-4 affine transform matrix, $\Omega_k$ is the set of voxels in the annotation volume that have label $k$, $S_k$ is the volume formed by taking the entries corresponding to class $k$ from the probability vectors of every voxel in $S$.
+
+The optimization starts with grid search over the 3 translation parameters. Then gradient descent with Adagrad is used to approach the optimum.
+
+\subsection{Localizing Landmarks on Registered Images} 
+
+To compute the statistics of landmarks' position and shape, we need to accurately localize the landmarks of the registered volumes in 3D.
+
+The fact that the probability volumes are registered to the annotation volume means the annotations can be propagated to these volumes. Figure 1 shows the contours of projected annotations on one of the registered images. These projected annotation contours provide an initial guess for the landmark positions on the images. Starting from them, morphological snake \cite{marquez2014morphological} is used to fit the probability map of each landmark, giving more accurate contours.
 
 
-An $M$-way classifier detects landmarks on each image, assigning a probability vector to each pixel. Intra-stack registration is performed for each stack separately based on intensity. Assuming constant section thickness and the sections being parallel, a volume can be reconstructed for each stack, in which every voxel has a probability vector.
 
-Given a stack of section images, the \textit{elastix} program \cite{klein2010elastix} is used to find rigid transformations that align every pair of consecutive sections, by maximizing the normalized correlation of image intensity. These transformations are then composed, bringing the whole stack into a rough alignment. Because the tape-transfer system used to process these sections preserves the tissues very well, 3-parameter rigid transforms are sufficient for this stage of registration.
-
-For each image in the stack, a $M$-way classifier assigns a landmark probability vector to each pixel. The result is a set of score maps ${S_l}$, one for each landmark.
-
-We then register the test volume to the atlas. A 3D rigid transform is seeked that maximizes the same-class overlap score between the test volume and the atlas. The score is defined as:
-\[ M(T) = \sum_l \sum_{p \in V_l} S_l[T(p)]\;,\]
-where $T$ is the transformation that maps voxels from the atlas to the test volume, $l$ indexes the landmark labels, $V_l$ is the set of voxels in the atlas with label $l$, $S_l$ is the score map for label $l$.
-
-The optimal parameters are found using a coarse-to-fine grid search, followed by gradient descent that moves the solution towards the maxima.
+%An $M$-way classifier detects landmarks on each image, assigning a probability vector to each pixel. Intra-stack registration is performed for each stack separately based on intensity. Assuming constant section thickness and the sections being parallel, a volume can be reconstructed for each stack, in which every voxel has a probability vector.
+%
+%Given a stack of section images, the \textit{elastix} program \cite{klein2010elastix} is used to find rigid transformations that align every pair of consecutive sections, by maximizing the normalized correlation of image intensity. These transformations are then composed, bringing the whole stack into a rough alignment. Because the tape-transfer system used to process these sections preserves the tissues very well, 3-parameter rigid transforms are sufficient for this stage of registration.
+%
+%For each image in the stack, a $M$-way classifier assigns a landmark probability vector to each pixel. The result is a set of score maps ${S_l}$, one for each landmark.
+%
+%We then register the test volume to the atlas. A 3D rigid transform is seeked that maximizes the same-class overlap score between the test volume and the atlas. The score is defined as:
+%\[ M(T) = \sum_l \sum_{p \in V_l} S_l[T(p)]\;,\]
+%where $T$ is the transformation that maps voxels from the atlas to the test volume, $l$ indexes the landmark labels, $V_l$ is the set of voxels in the atlas with label $l$, $S_l$ is the score map for label $l$.
+%
+%The optimal parameters are found using a coarse-to-fine grid search, followed by gradient descent that moves the solution towards the maxima.
 
 %Three components of the system employ machine learning: landmark discovery, landmark modelling and landmark localization. 
 %

@@ -32,6 +32,11 @@ Lein, E.S., Hawrylycz, M.J., Ao, N., Ayres, M., Bensinger, A., Bernard, A.,
   atlas of gene expression in the adult mouse brain. Nature  445(7124),
   168--176 (2007)
 
+\bibitem{marquez2014morphological}
+Marquez-Neila, P., Baumela, L., Alvarez, L.: A morphological approach to
+  curvature-based evolution of curves and surfaces. Pattern Analysis and
+  Machine Intelligence, IEEE Transactions on  36(1),  2--17 (2014)
+
 \bibitem{ng2009anatomic}
 Ng, L., Bernard, A., Lau, C., Overly, C.C., Dong, H.W., Kuan, C., Pathak, S.,
   Sunkin, S.M., Dang, C., Bohland, J.W., et~al.: An anatomic gene expression
@@ -41,6 +46,10 @@ Ng, L., Bernard, A., Lau, C., Overly, C.C., Dong, H.W., Kuan, C., Pathak, S.,
 Oh, S.W., Harris, J.A., Ng, L., Winslow, B., Cain, N., Mihalas, S., Wang, Q.,
   Lau, C., Kuan, L., Henry, A.M., et~al.: A mesoscale connectome of the mouse
   brain. Nature  508(7495),  207--214 (2014)
+
+\bibitem{paxinos2004mouse}
+Paxinos, G., Franklin, K.B.: The mouse brain in stereotaxic coordinates. Gulf
+  Professional Publishing (2004)
 
 \bibitem{peng2011brainaligner}
 Peng, H., Chung, P., Long, F., Qu, L., Jenett, A., Seeds, A.M., Myers, E.W.,
