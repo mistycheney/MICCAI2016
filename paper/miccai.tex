@@ -56,12 +56,27 @@ The atlas contains the mean and variance of the positions and shapes of nine ana
 
 \section{Overview}
 
-As one of the most important tools to neuroscientists, a brain atlas provides a standard model for the anatomy of a certain species' brain. It helps one establish the identity of a region of interest in a new sample. It also allows one to map different samples to a common coordinate system, so that one can quantify the spatial variance of a particular structure between individuals, or correlate gene expression patterns spatially to discover neural circuitry.
+One of the most important tools to neuroscientists, a brain atlas
+provides a standard model for the anatomy of a certain species'
+brain. It helps one identify the location of anatomical structures in a new sample. It also allows one to map different samples to a common coordinate system, so that one can quantify the spatial variance of a particular structure between individuals, or correlate gene expression patterns spatially to identify neural circuitry.
 
-In this paper we focus on building an atlas for the mouse brainstem.
-Existing mouse brain atlases, such as the Paxinos' \cite{paxinos2004mouse}, Waxholm Space \cite{johnson2010waxholm} and the Allen Reference Atlas \cite{dong2008allen}, have some limitations. First, they do not have the desired level of details in the brainstem. Second, they are merely visual references. There are no tools for registering new data into the atlases. Third, they are not updateable. Fourth, they do not give the variance of structures. Lastly, a lot of manual work is involved in specifying registration landmarks and making annotations.
+In this paper we focus on building an atlas for the mouse brainstem using light microscopy.
+Existing mouse brain atlases, such as the Paxinos'
+\cite{paxinos2004mouse}, Waxholm Space \cite{johnson2010waxholm} and
+the Allen Reference Atlas \cite{dong2008allen}, have some
+limitations. 
+\yoav{In american technical prose, you start with the most significant
+  difference and follow it with the less important ones. I think that the manual work and the
+  lack of registration tools are the most significant
+  differences. Then the variance, and then the specific problem with
+  the brain-stem having less grey-level variation.}
+First, they do not have the desired level of details in
+the brainstem. Second, they are merely visual references. There are no
+tools for registering new data to the atlas. Third, they are hard to
+update and refine as new data is collected. Fourth, they do not
+charactarize the variation in the location and shape of structures. Lastly, a lot of manual work is involved in specifying registration landmarks and making annotations.
 
-We propose a new type of atlas which we call the ``active atlas". On the one hand, an active atlas is an anatomical reference model. It contains the mean and variance of position and shape of major anatomical structures. On the other hand, an active atlas includes landmark detectors. These detectors are texture classifiers trained in a semi-supervised fashion to detect regions with salient texture, such as nuclei and tracts, that can serve as registration landmarks. Such an atlas is ``active" because the detectors allows our system to actively detect landmarks on new data for registeration, instead of being a ``passive" registration template; and also because these detectors can update themselves from new data, thus not ``static".
+We propose a new type of atlas which we call an ``active atlas''. On the one hand, an active atlas is an anatomical reference model. It contains the mean and variance of position and shape of major anatomical structures. On the other hand, an active atlas includes landmark detectors. These detectors are texture classifiers trained in a semi-supervised fashion to detect regions with salient texture, such as nuclei and tracts, that can serve as registration landmarks. Such an atlas is ``active" because the detectors allows our system to actively detect landmarks on new data for registeration, instead of being a ``passive" registration template; and also because these detectors can update themselves from new data, thus not ``static".
 
 This paper proposes a machine-learning based method for developing an active atlas, based on image series of Nissl-stained cryo-sectioned brains.
 
