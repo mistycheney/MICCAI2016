@@ -6,6 +6,11 @@
 Technical white paper: Allen mouse common coordinate framework. Tech. rep.
   (2015)
 
+\bibitem{chen2015mxnet}
+Chen, T., Li, M., Li, Y., Lin, M., Wang, N., Wang, M., Xiao, T., Xu, B., Zhang,
+  C., Zhang, Z.: Mxnet: A flexible and efficient machine learning library for
+  heterogeneous distributed systems. arXiv preprint arXiv:1512.01274  (2015)
+
 \bibitem{chiang2011three}
 Chiang, A.S., Lin, C.Y., Chuang, C.C., Chang, H.M., Hsieh, C.H., Yeh, C.W.,
   Shih, C.T., Wu, J.J., Wang, G.T., Chen, Y.C., et~al.: Three-dimensional
@@ -15,6 +20,10 @@ Chiang, A.S., Lin, C.Y., Chuang, C.C., Chang, H.M., Hsieh, C.H., Yeh, C.W.,
 \bibitem{dong2008allen}
 Dong, H.: Allen Reference Atlas: a digital color brain atlas of the C57BL/6J
   male mouse. John Wiley \& Sons (2008)
+
+\bibitem{gower1975generalized}
+Gower, J., et~al.: Generalized procrustes analysis. Psychometrika  40(1),
+  33--51 (1975)
 
 \bibitem{johnson2010waxholm}
 Johnson, G.A., Badea, A., Brandenburg, J., Cofer, G., Fubara, B., Liu, S.,

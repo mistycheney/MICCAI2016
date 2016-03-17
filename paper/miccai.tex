@@ -12,6 +12,8 @@
 \usepackage{mathptmx}
 %\usepackage{newtxtext,newtxmath}
 
+\usepackage[british]{babel}
+
 \newcommand{\authcmt}[2]{\textcolor{#1}{#2}}
 \newcommand{\yuncong}[1]{\authcmt{red}{[YC: #1]}}
 \newcommand{\yoav}[1]{\authcmt{blue}{[YF: #1]}}
@@ -72,11 +74,15 @@ limitations.
   lack of registration tools are the most significant
   differences. Then the variance, and then the specific problem with
   the brain-stem having less grey-level variation.}
+  
+
+First, a lot of manual work is involved in specifying registration landmarks and making annotations. Second, they do not charactarize the variation in the location and shape of structures. 
+
+
 First, they do not have the desired level of details in
 the brainstem. Second, they are merely visual references. There are no
 tools for registering new data to the atlas. Third, they are hard to
-update and refine as new data is collected. Fourth, they do not
-charactarize the variation in the location and shape of structures. Lastly, a lot of manual work is involved in specifying registration landmarks and making annotations.
+update and refine as new data is collected. 
 
 We propose a new type of atlas which we call an ``active atlas''. On the one hand, an active atlas is an anatomical reference model. It contains the mean and variance of position and shape of major anatomical structures. On the other hand, an active atlas includes landmark detectors. These detectors are texture classifiers trained in a semi-supervised fashion to detect regions with salient texture, such as nuclei and tracts, that can serve as registration landmarks. Such an atlas is ``active" because the detectors allows our system to actively detect landmarks on new data for registeration, instead of being a ``passive" registration template; and also because these detectors can update themselves from new data, thus not ``static".
 
@@ -181,12 +187,29 @@ For registration, the BrainAligner program \cite{peng2011brainaligner} relies on
 
 \section{Methodology}
 
+The pipeline Figure \ref{fig:pipeline}
+
+\begin{figure}
+  \centering
+    \includegraphics[width=1\textwidth]{../figures/pipeline_v4.png}
+  \caption{System overview. First, all image stacks are rigidly aligned. (a) One stack is annotated. The reconstructed 3D landmarks constitute an initial atlas. (b) A texture classifier is trained using patches extracted from annotated images. The classifier generates a set of score maps for each unannotated volume. (c) Unannotated volume is registered to the atlas based on the score maps using a 12-parameter affine transform. (d) Given the transform, the atlas projects landmark contours back onto the images. (e) Initialized by the projected contours, a snake finds the optimal contours based on the score maps. (f) The landmark contours are used to reconstruct the landmarks in 3D. (g) The volume is registered to the atlas again. (h) Stastistics of landmarks' position and shape are updated in the atlas.}
+  \label{fig:pipeline}
+\end{figure}
+
 \subsection{Learning Texture Classifiers using Convolutional Neural Network}
 
 %Unlike cerebrum and cerebellum, brainstem does not have striations. Grey-level information alone is not sufficient to discern most of the nuclei. Region textures are essential.
 
-To bootstrap the atlas generation process, we picked an arbitrary stack, and asked an expert anatomist to annotate every other image for major landmarks by drawing polygons on the images using a homemade program (Figure 1). The results are 100 polygons for 19 different landmarks that span the entire brainstem, including nuclei (e.g. facial motor nucleus, trigeminal nucleus) and fiber tracts (e.g. trigeminal spinal tract, superior cerebellar peduncle). Patches of size 224-by-224 that are completely inside of each annotation polygon are extracted. Random patches from outside of any polygon are also extracted as patches for ``background". These patches form the training set for the texture classifier. 
-A multiway classifier is obtained by fine-tuning the inception-BN network [1] using the training set. The network is pre-trained for ILSVRC2012 dataset.
+
+\begin{figure}
+  \centering
+    \includegraphics[width=0.5\textwidth]{../figures/annotation.jpg}
+  \caption{Human annotations on one section}
+  \label{fig:anno}
+\end{figure}
+
+To bootstrap the atlas generation process, an arbitrary stack was picked, and an expert anatomist annotated every other image for major landmarks by drawing polygons on the images (Figure \ref{fig:anno}). The results are 100 polygons for 19 different landmarks that span the entire brainstem, including nuclei (e.g. facial motor nucleus, trigeminal nucleus) and fiber tracts (e.g. trigeminal spinal tract, superior cerebellar peduncle). Patches of size 224-by-224 that are completely inside of each annotation polygon are extracted. Random patches from outside of any polygon are also extracted as examples of ``background". These patches form the training set for the texture classifier. 
+A multiway classifier is obtained by fine-tuning the inception-BN neural network [1] using the training set. The network is pre-trained for ILSVRC2012 dataset.
 
 For an input patch, the classifier outputs a 20-dimensional probability vector, indicating the probability that the patch belongs to either the background or each of the 19 landmarks.
 
@@ -215,36 +238,81 @@ The optimization starts with grid search over the 3 translation parameters. Then
 
 To compute the statistics of landmarks' position and shape, we need to accurately localize the landmarks of the registered volumes in 3D.
 
-The fact that the probability volumes are registered to the annotation volume means the annotations can be propagated to these volumes. Figure 1 shows the contours of projected annotations on one of the registered images. These contours are not adapted to the actual images, but provide a rough guess for the landmarks' positions. Starting from them, morphological snake \cite{marquez2014morphological} is used to fit the probability map of each landmark, giving more accurate contours.
+The fact that the probability volumes are registered to the annotation volume means the annotations can be propagated to these volumes. Figure 1 shows the contours of projected annotations on one of the registered images. These contours are not adapted to the actual images, but provide a rough guess for the landmarks' positions. Starting from them, a snake is used to fit the probability map of each landmark, giving more accurate contours (Figure \ref{fig:snake}).
+
+\begin{figure}
+  \centering
+    \includegraphics[width=1\textwidth]{../figures/snake.png}
+  \caption{(a) Snake-localized contours (red), initialized by propagated contours from atlas (green). (b) The snake algorithm starts from the propagated contour. After convergence, a concave hull is computed to approximate it.}
+  \label{fig:snake}
+\end{figure}
+
+A projected contour is first shifted to a position maximizing the average score inside. The snake algorithm then warps the contour to fit the score map of the particular landmark. The snake implementation used is the morphological ACWE \cite{marquez2014morphological}. After the snake converges, a concave hull is computed to simplify the contour.
+
+Sometimes a landmark exists on an image, but the atlas does not project a contour on this image. So for a landmark without projected contour, we duplicate the projection if any of the neighboring 10 sections has it.
 
 After a small amount of human editing, these contours essentially become annotations for these registered stacks. Patches can be extracted from them to improve the texture classifier. This automatic augmentation of the training data consisitutes the semi-supervised scheme of iteratively learning the landmark detectors.
+
+
+
 
 \subsection{Generating the Atlas} 
 
 
-The atlas includes the statistics of the centroid of each landmark, as well as the variation modes of its shape.
+The atlas includes the statistics of the position of each landmark.
 
-Based on the transformations computed previously, landmark contours in registered images are reconstructed as 3D surface meshes in the common coordinate space defined by the annotation volume. The meshes are decimated and smoothed. 
+Based on the transformations computed previously, landmark contours in registered images are reconstructed as 3D surface meshes in the common coordinate space defined by the annotation volume. The meshes are decimated and smoothed.
 
-In each of the 9 brains, a landmark has two instances, one in each hemisphere. This gives 18 instances of each landmark for learning a 3D shape model of it.
+The principle axes of the 3D meshes are computed.
 
-
-
-
+Amount of rigid transform that aligns a landmark from a new brain to the atlas. 
 
 
 
 \section{Experiment Results} 
 
+\subsection{Variation of Landmark Position Between Brains}
+
+
+
+\subsection{Accuracy of Classifier}
+
+The neural network is implemented using mxnet \cite{chen2015mxnet}. The first batch of training data consists of 1000 polygons. After landmarks are localized on images of each new stack, the classifier is updated using the additional training data. The accuracy on the held-out brain improves with the number of brains registered to the atlas, as can be seen in Figure 1.
+
+The confusion matrix (Figure \ref{fig:cm}) for patches extracted from a new brain shows the good generalizability of the texture classifier. There are several pairs/groups of landmarks that are often mistaken.
+As there is competition of probabilities among classes that are similar, resulting in undesirable suppression of the probability value of certain classes. A trick we used to remedy this is to identify similar classes and merge them into one class. They are usually not near each other, so we can do that.
+
+The training accuracy quickly approaches 100\%. The confusion matrix suggests 
+
+
+\begin{figure}
+  \centering
+    \includegraphics[width=.5\textwidth]{../figures/cm_MD594.png}
+  \caption{Confusion matrix of the classifier}
+  \label{fig:cm}
+\end{figure}
+
 \subsection{Accuracy of 3D Registration}
 
-\subsection{Accuracy of Snake-adjusted Contours}
+\subsection{Accuracy of Snake-localized Contours}
 
-\subsection{Improvement of Classifier by Training Data Augmentation}
+We analyze the number of edits a human give on our snake-localized contour.
+Out of 100 contours, 20 are edited, which are of three types:
+\begin{itemize}
+\item 30\% is moving vertices. This includes deleting a detection and add a new one at a different location. Among these, on average 40\% of the vertices are moved, and the mean displacement is 5 um.
+\item 40\% is removing spurious detection.
+\item 50\% is adding annotations for missed landmarks. Failures are mostly due to the score maps given by the classifier is not optimal.
+\end{itemize}
 
-\subsection{Position and Shape Statistics of Landmarks}
+
+\section{Conclusion}
 
 
+Future work includes:
+\begin{itemize}
+\item Our current atlas only characterized the position. For the shape we only characterized the rough orientation by treating all landmarks as an ellipsoid. This does not capture the shape of curved structures. The next step is to learn better 3D shape models.
+\item 
+\end{itemize}
 
 
 %An $M$-way classifier detects landmarks on each image, assigning a probability vector to each pixel. Intra-stack registration is performed for each stack separately based on intensity. Assuming constant section thickness and the sections being parallel, a volume can be reconstructed for each stack, in which every voxel has a probability vector.

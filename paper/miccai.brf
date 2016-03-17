@@ -10,5 +10,6 @@
 \backcite {ronneberger2012vibe, randlett2015whole}{{2}{2}{section.1.2}}
 \backcite {peng2011brainaligner}{{2}{2}{section.1.2}}
 \backcite {ronneberger2012vibe}{{2}{2}{section.1.2}}
-\backcite {klein2010elastix}{{3}{3.2}{subsection.1.3.2}}
-\backcite {marquez2014morphological}{{3}{3.4}{subsection.1.3.4}}
+\backcite {klein2010elastix}{{4}{3.2}{subsection.1.3.2}}
+\backcite {marquez2014morphological}{{5}{3.4}{figure.1.3}}
+\backcite {chen2015mxnet}{{5}{4.2}{subsection.1.4.2}}
